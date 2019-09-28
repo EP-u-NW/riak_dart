@@ -1,0 +1,8 @@
+name: riak_dart
+version: 0.3.0
+environment:
+  sdk: '>=2.5.0 <3.0.0'
+dependencies:
+  protobuf: ^0.14.4
+  meta: ^1.1.7
+  pedantic: ^1.8.0+1
