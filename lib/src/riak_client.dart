@@ -30,7 +30,7 @@ class RiakClient extends AbstractClient {
       {@required List<int> bucket, List<int> type}) {
     RpbGetBucketReq req = new RpbGetBucketReq();
     req.bucket = bucket;
-    req.type = type;
+    if (type != null) req.type = type;
     return sendRequest<RpbGetBucketResp>(
             requestCode: rpbGetBucketReq, message: req)
         .last;
@@ -43,7 +43,7 @@ class RiakClient extends AbstractClient {
     RpbSetBucketReq req = new RpbSetBucketReq();
     req.bucket = bucket;
     req.props = props;
-    req.type = type;
+    if (type != null) req.type = type;
     return sendRequest<void>(requestCode: rpbSetBucketReq, message: req).last;
   }
 
@@ -51,7 +51,7 @@ class RiakClient extends AbstractClient {
       {@required List<int> bucket, List<int> type}) {
     RpbResetBucketReq req = new RpbResetBucketReq();
     req.bucket = bucket;
-    req.type = type;
+    if (type != null) req.type = type;
     return sendRequest<void>(requestCode: rpbResetBucketReq, message: req).last;
   }
 
@@ -72,17 +72,17 @@ class RiakClient extends AbstractClient {
     RpbGetReq req = new RpbGetReq();
     req.bucket = bucket;
     req.key = key;
-    req.r = r;
-    req.pr = pr;
-    req.basicQuorum = basicQuorum;
-    req.notfoundOk = notfoundOk;
-    req.ifModified = ifModified;
-    req.head = head;
-    req.deletedvclock = deletedvclock;
-    req.timeout = timeout;
-    req.sloppyQuorum = sloppyQuorum;
-    req.nVal = nVal;
-    req.type = type;
+    if (r != null) req.r = r;
+    if (pr != null) req.pr = pr;
+    if (basicQuorum != null) req.basicQuorum = basicQuorum;
+    if (notfoundOk != null) req.notfoundOk = notfoundOk;
+    if (ifModified != null) req.ifModified = ifModified;
+    if (head != null) req.head = head;
+    if (deletedvclock != null) req.deletedvclock = deletedvclock;
+    if (timeout != null) req.timeout = timeout;
+    if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
+    if (nVal != null) req.nVal = nVal;
+    if (type != null) req.type = type;
     return sendRequest<RpbGetResp>(requestCode: rpbGetReq, message: req).last;
   }
 
@@ -107,19 +107,19 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     req.key = key;
     req.content = content;
-    req.vclock = vclock;
-    req.w = w;
-    req.dw = dw;
-    req.returnBody = returnBody;
-    req.pw = pw;
-    req.ifNotModified = ifNotModified;
-    req.ifNoneMatch = ifNoneMatch;
-    req.returnHead = returnHead;
-    req.timeout = timeout;
-    req.asis = asis;
-    req.sloppyQuorum = sloppyQuorum;
-    req.nVal = nVal;
-    req.type = type;
+    if (vclock != null) req.vclock = vclock;
+    if (w != null) req.w = w;
+    if (dw != null) req.dw = dw;
+    if (returnBody != null) req.returnBody = returnBody;
+    if (pw != null) req.pw = pw;
+    if (ifNotModified != null) req.ifNotModified = ifNotModified;
+    if (ifNoneMatch != null) req.ifNoneMatch = ifNoneMatch;
+    if (returnHead != null) req.returnHead = returnHead;
+    if (timeout != null) req.timeout = timeout;
+    if (asis != null) req.asis = asis;
+    if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
+    if (nVal != null) req.nVal = nVal;
+    if (type != null) req.type = type;
     return sendRequest<RpbPutResp>(requestCode: rpbPutReq, message: req).last;
   }
 
@@ -140,17 +140,17 @@ class RiakClient extends AbstractClient {
     RpbDelReq req = new RpbDelReq();
     req.bucket = bucket;
     req.key = key;
-    req.rw = rw;
-    req.vclock = vclock;
-    req.r = r;
-    req.w = w;
-    req.pr = pr;
-    req.pw = pw;
-    req.dw = dw;
-    req.timeout = timeout;
-    req.sloppyQuorum = sloppyQuorum;
-    req.nVal = nVal;
-    req.type = type;
+    if (rw != null) req.rw = rw;
+    if (vclock != null) req.vclock = vclock;
+    if (r != null) req.r = r;
+    if (w != null) req.w = w;
+    if (pr != null) req.pr = pr;
+    if (pw != null) req.pw = pw;
+    if (dw != null) req.dw = dw;
+    if (timeout != null) req.timeout = timeout;
+    if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
+    if (nVal != null) req.nVal = nVal;
+    if (type != null) req.type = type;
     return sendRequest<void>(requestCode: rpbDelReq, message: req).last;
   }
 
@@ -182,17 +182,17 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     req.index = index;
     req.qtype = qtype;
-    req.key = key;
-    req.rangeMin = rangeMin;
-    req.rangeMax = rangeMax;
-    req.returnTerms = returnTerms;
-    req.stream = stream;
-    req.maxResults = maxResults;
-    req.continuation = continuation;
-    req.timeout = timeout;
-    req.type = type;
-    req.termRegex = termRegex;
-    req.paginationSort = paginationSort;
+    if (key != null) req.key = key;
+    if (rangeMin != null) req.rangeMin = rangeMin;
+    if (rangeMax != null) req.rangeMax = rangeMax;
+    if (returnTerms != null) req.returnTerms = returnTerms;
+    if (stream != null) req.stream = stream;
+    if (maxResults != null) req.maxResults = maxResults;
+    if (continuation != null) req.continuation = continuation;
+    if (timeout != null) req.timeout = timeout;
+    if (type != null) req.type = type;
+    if (termRegex != null) req.termRegex = termRegex;
+    if (paginationSort != null) req.paginationSort = paginationSort;
     return sendRequest<RpbIndexResp>(
         requestCode: rpbIndexReq, message: req, streamingCall: true);
   }
@@ -212,13 +212,13 @@ class RiakClient extends AbstractClient {
     req.q = q;
     req.index = index;
     req.fl.addAll(fl);
-    req.rows = rows;
-    req.start = start;
-    req.sort = sort;
-    req.filter = filter;
-    req.df = df;
-    req.op = op;
-    req.presort = presort;
+    if (rows != null) req.rows = rows;
+    if (start != null) req.start = start;
+    if (sort != null) req.sort = sort;
+    if (filter != null) req.filter = filter;
+    if (df != null) req.df = df;
+    if (op != null) req.op = op;
+    if (presort != null) req.presort = presort;
     return sendRequest<RpbSearchQueryResp>(
             requestCode: rpbSearchQueryReq, message: req)
         .last;
@@ -249,14 +249,14 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     req.key = key;
     req.type = type;
-    req.r = r;
-    req.pr = pr;
-    req.basicQuorum = basicQuorum;
-    req.notfoundOk = notfoundOk;
-    req.timeout = timeout;
-    req.sloppyQuorum = sloppyQuorum;
-    req.nVal = nVal;
-    req.includeContext = includeContext;
+    if (r != null) req.r = r;
+    if (pr != null) req.pr = pr;
+    if (basicQuorum != null) req.basicQuorum = basicQuorum;
+    if (notfoundOk != null) req.notfoundOk = notfoundOk;
+    if (timeout != null) req.timeout = timeout;
+    if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
+    if (nVal != null) req.nVal = nVal;
+    if (includeContext != null) req.includeContext = includeContext;
     return sendRequest<DtFetchResp>(requestCode: dtFetchReq, message: req).last;
   }
 
@@ -277,22 +277,22 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     req.type = type;
     req.op = op;
-    req.key = key;
-    req.w = w;
-    req.dw = dw;
-    req.pw = pw;
-    req.returnBody = returnBody;
-    req.timeout = timeout;
-    req.sloppyQuorum = sloppyQuorum;
-    req.nVal = nVal;
-    req.includeContext = includeContext;
+    if (key != null) req.key = key;
+    if (w != null) req.w = w;
+    if (dw != null) req.dw = dw;
+    if (pw != null) req.pw = pw;
+    if (returnBody != null) req.returnBody = returnBody;
+    if (timeout != null) req.timeout = timeout;
+    if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
+    if (nVal != null) req.nVal = nVal;
+    if (includeContext != null) req.includeContext = includeContext;
     return sendRequest<DtUpdateResp>(requestCode: dtUpdateReq, message: req)
         .last;
   }
 
   Future<RpbYokozunaIndexGetResp> yokozunaGetIndex({List<int> name}) {
     RpbYokozunaIndexGetReq req = new RpbYokozunaIndexGetReq();
-    req.name = name;
+    if (name != null) req.name = name;
     return sendRequest<RpbYokozunaIndexGetResp>(
             requestCode: rpbYokozunaIndexGetReq, message: req)
         .last;
@@ -344,5 +344,22 @@ class RiakClient extends AbstractClient {
 
   Future<RpbGetClientIdResp> getClientId() {
     return sendRequest<RpbGetClientIdResp>(requestCode: rpbGetClientIdReq).last;
+  }
+
+  Future<RpbGetBucketResp> getBucketTypeProperties({@required List<int> type}) {
+    RpbGetBucketTypeReq req = new RpbGetBucketTypeReq();
+    req.type = type;
+    return sendRequest<RpbGetBucketResp>(
+            requestCode: rpbGetBucketTypeReq, message: req)
+        .last;
+  }
+
+  Future<void> setBucketTypeProperties(
+      {@required RpbBucketProps props, @required List<int> type}) {
+    RpbSetBucketTypeReq req = new RpbSetBucketTypeReq();
+    req.type = type;
+    req.props = props;
+    return sendRequest<void>(requestCode: rpbSetBucketTypeReq, message: req)
+        .last;
   }
 }

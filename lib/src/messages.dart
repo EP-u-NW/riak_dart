@@ -143,7 +143,9 @@ const Map<int, int> expectedResponseTypes = const <int, int>{
   rpbYokozunaIndexPutReq: rpbPutResp,
   rpbYokozunaIndexDeleteReq: rpbDelResp,
   rpbYokozunaSchemaPutReq: rpbPutResp,
-  rpbStartTls: rpbStartTls
+  rpbStartTls: rpbStartTls,
+  rpbGetBucketTypeReq: rpbGetBucketResp,
+  rpbSetBucketTypeReq: rpbSetBucketResp
 };
 
 const int rpbErrorResp = 0,
