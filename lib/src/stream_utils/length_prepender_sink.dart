@@ -9,7 +9,7 @@ class LengthPrependerSink extends StreamSink<List<int>> {
   Future<dynamic> maybeFlush() => (_wrapped as IOSink)?.flush();
 
   void addBytesRaw(ByteData data) {
-    add(new Uint8List.view(data.buffer));
+    add(new Uint8List.view(data.buffer, data.offsetInBytes));
   }
 
   @override
