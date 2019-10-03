@@ -1,15 +1,26 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 class LengthPrependerSink extends StreamSink<List<int>> {
   final StreamSink<List<int>> _wrapped;
+  StreamSink<List<int>> get wrapped => _wrapped;
   LengthPrependerSink(this._wrapped);
 
-  Future<dynamic> maybeFlush() => (_wrapped as IOSink)?.flush();
+  Future<dynamic> flush() async {
+    try {
+      return await (_wrapped as dynamic).flush();
+    } on NoSuchMethodError {
+      //Ignore
+    }
+  }
 
   void addBytesRaw(ByteData data) {
-    add(new Uint8List.view(data.buffer, data.offsetInBytes));
+    add(new Uint8List.view(
+        data.buffer, data.offsetInBytes, data.lengthInBytes));
+  }
+
+  Future addStreamRaw(Stream<List<int>> stream) async {
+    return _wrapped.addStream(stream);
   }
 
   @override

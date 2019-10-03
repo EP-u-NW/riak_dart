@@ -38,10 +38,10 @@ abstract class AbstractClient {
       int messageCode = message.first;
       MessageBuilder builder = builders[messageCode];
       if (builder != null) {
-        _handleMessage(
-            messageCode,
-            builder(
-                new Uint8List.view(message.buffer, 1 + message.offsetInBytes)));
+        List<int> content = new Uint8List.view(
+            message.buffer, 1 + message.offsetInBytes, message.length - 1);
+        GeneratedMessage generatedMessage = builder(content);
+        _handleMessage(messageCode, generatedMessage);
       } else {
         _onError(new UnknownMessageCodeException(messageCode: messageCode));
       }
@@ -84,7 +84,7 @@ abstract class AbstractClient {
     unawaited(r.streamController.close());
   }
 
-  Future<dynamic> flush() => _out.maybeFlush();
+  Future<dynamic> flush() => _out.flush();
 
   Future<dynamic> close() => _out.close();
 
