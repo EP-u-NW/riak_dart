@@ -16,14 +16,18 @@ class RiakClient extends AbstractClient {
   }
 
   Future<RpbListBucketsResp> listBuckets() {
-    return sendRequest<RpbListBucketsResp>(requestCode: rpbListBucketsReq).last;
+    return sendRequest<RpbListBucketsResp>(
+            requestCode: MessageCode.rpbListBucketsReq)
+        .last;
   }
 
   Stream<RpbListKeysResp> listKeys({@required List<int> bucket}) {
     RpbListKeysReq req = new RpbListKeysReq();
     req.bucket = bucket;
     return sendRequest<RpbListKeysResp>(
-        requestCode: rpbListKeysReq, message: req, streamingCall: true);
+        requestCode: MessageCode.rpbListKeysReq,
+        message: req,
+        streamingCall: true);
   }
 
   Future<RpbGetBucketResp> getBucketProperties(
@@ -32,7 +36,7 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     if (type != null) req.type = type;
     return sendRequest<RpbGetBucketResp>(
-            requestCode: rpbGetBucketReq, message: req)
+            requestCode: MessageCode.rpbGetBucketReq, message: req)
         .last;
   }
 
@@ -44,7 +48,27 @@ class RiakClient extends AbstractClient {
     req.bucket = bucket;
     req.props = props;
     if (type != null) req.type = type;
-    return sendRequest<void>(requestCode: rpbSetBucketReq, message: req).last;
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbSetBucketReq, message: req)
+        .last;
+  }
+
+  Future<RpbGetBucketResp> getBucketTypeProperties({@required List<int> type}) {
+    RpbGetBucketTypeReq req = new RpbGetBucketTypeReq();
+    req.type = type;
+    return sendRequest<RpbGetBucketResp>(
+            requestCode: MessageCode.rpbGetBucketTypeReq, message: req)
+        .last;
+  }
+
+  Future<void> setBucketTypeProperties(
+      {@required RpbBucketProps props, @required List<int> type}) {
+    RpbSetBucketTypeReq req = new RpbSetBucketTypeReq();
+    req.type = type;
+    req.props = props;
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbSetBucketTypeReq, message: req)
+        .last;
   }
 
   Future<void> resetBucketProperties(
@@ -52,7 +76,9 @@ class RiakClient extends AbstractClient {
     RpbResetBucketReq req = new RpbResetBucketReq();
     req.bucket = bucket;
     if (type != null) req.type = type;
-    return sendRequest<void>(requestCode: rpbResetBucketReq, message: req).last;
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbResetBucketReq, message: req)
+        .last;
   }
 
   Future<RpbGetResp> fetchObject(
@@ -83,7 +109,9 @@ class RiakClient extends AbstractClient {
     if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
     if (nVal != null) req.nVal = nVal;
     if (type != null) req.type = type;
-    return sendRequest<RpbGetResp>(requestCode: rpbGetReq, message: req).last;
+    return sendRequest<RpbGetResp>(
+            requestCode: MessageCode.rpbGetReq, message: req)
+        .last;
   }
 
   Future<RpbPutResp> storeObject(
@@ -120,7 +148,9 @@ class RiakClient extends AbstractClient {
     if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
     if (nVal != null) req.nVal = nVal;
     if (type != null) req.type = type;
-    return sendRequest<RpbPutResp>(requestCode: rpbPutReq, message: req).last;
+    return sendRequest<RpbPutResp>(
+            requestCode: MessageCode.rpbPutReq, message: req)
+        .last;
   }
 
   Future<void> deleteObject(
@@ -151,7 +181,8 @@ class RiakClient extends AbstractClient {
     if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
     if (nVal != null) req.nVal = nVal;
     if (type != null) req.type = type;
-    return sendRequest<void>(requestCode: rpbDelReq, message: req).last;
+    return sendRequest<void>(requestCode: MessageCode.rpbDelReq, message: req)
+        .last;
   }
 
   Stream<RpbMapRedResp> mapReduce(
@@ -160,7 +191,9 @@ class RiakClient extends AbstractClient {
     req.request = request;
     req.contentType = contentType;
     return sendRequest<RpbMapRedResp>(
-        requestCode: rpbMapRedReq, message: req, streamingCall: true);
+        requestCode: MessageCode.rpbMapRedReq,
+        message: req,
+        streamingCall: true);
   }
 
   Stream<RpbIndexResp> secondaryIndexes(
@@ -194,7 +227,9 @@ class RiakClient extends AbstractClient {
     if (termRegex != null) req.termRegex = termRegex;
     if (paginationSort != null) req.paginationSort = paginationSort;
     return sendRequest<RpbIndexResp>(
-        requestCode: rpbIndexReq, message: req, streamingCall: true);
+        requestCode: MessageCode.rpbIndexReq,
+        message: req,
+        streamingCall: true);
   }
 
   Future<RpbSearchQueryResp> search(
@@ -220,16 +255,17 @@ class RiakClient extends AbstractClient {
     if (op != null) req.op = op;
     if (presort != null) req.presort = presort;
     return sendRequest<RpbSearchQueryResp>(
-            requestCode: rpbSearchQueryReq, message: req)
+            requestCode: MessageCode.rpbSearchQueryReq, message: req)
         .last;
   }
 
   Future<void> ping() {
-    return sendRequest<void>(requestCode: rpbPingReq).last;
+    return sendRequest<void>(requestCode: MessageCode.rpbPingReq).last;
   }
 
   Future<RpbGetServerInfoResp> serverInfo() {
-    return sendRequest<RpbGetServerInfoResp>(requestCode: rpbGetServerInfoReq)
+    return sendRequest<RpbGetServerInfoResp>(
+            requestCode: MessageCode.rpbGetServerInfoReq)
         .last;
   }
 
@@ -257,7 +293,9 @@ class RiakClient extends AbstractClient {
     if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
     if (nVal != null) req.nVal = nVal;
     if (includeContext != null) req.includeContext = includeContext;
-    return sendRequest<DtFetchResp>(requestCode: dtFetchReq, message: req).last;
+    return sendRequest<DtFetchResp>(
+            requestCode: MessageCode.dtFetchReq, message: req)
+        .last;
   }
 
   Future<DtUpdateResp> dataTypeStore(
@@ -286,7 +324,8 @@ class RiakClient extends AbstractClient {
     if (sloppyQuorum != null) req.sloppyQuorum = sloppyQuorum;
     if (nVal != null) req.nVal = nVal;
     if (includeContext != null) req.includeContext = includeContext;
-    return sendRequest<DtUpdateResp>(requestCode: dtUpdateReq, message: req)
+    return sendRequest<DtUpdateResp>(
+            requestCode: MessageCode.dtUpdateReq, message: req)
         .last;
   }
 
@@ -294,14 +333,15 @@ class RiakClient extends AbstractClient {
     RpbYokozunaIndexGetReq req = new RpbYokozunaIndexGetReq();
     if (name != null) req.name = name;
     return sendRequest<RpbYokozunaIndexGetResp>(
-            requestCode: rpbYokozunaIndexGetReq, message: req)
+            requestCode: MessageCode.rpbYokozunaIndexGetReq, message: req)
         .last;
   }
 
   Future<void> yokozunaPutIndex({@required RpbYokozunaIndex index}) {
     RpbYokozunaIndexPutReq req = new RpbYokozunaIndexPutReq();
     req.index = index;
-    return sendRequest<void>(requestCode: rpbYokozunaIndexPutReq, message: req)
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbYokozunaIndexPutReq, message: req)
         .last;
   }
 
@@ -309,7 +349,7 @@ class RiakClient extends AbstractClient {
     RpbYokozunaIndexDeleteReq req = new RpbYokozunaIndexDeleteReq();
     req.name = name;
     return sendRequest<void>(
-            requestCode: rpbYokozunaIndexDeleteReq, message: req)
+            requestCode: MessageCode.rpbYokozunaIndexDeleteReq, message: req)
         .last;
   }
 
@@ -318,14 +358,15 @@ class RiakClient extends AbstractClient {
     RpbYokozunaSchemaGetReq req = new RpbYokozunaSchemaGetReq();
     req.name = name;
     return sendRequest<RpbYokozunaSchemaGetResp>(
-            requestCode: rpbYokozunaSchemaGetReq, message: req)
+            requestCode: MessageCode.rpbYokozunaSchemaGetReq, message: req)
         .last;
   }
 
   Future<void> yokozunaSchemaPut({@required RpbYokozunaSchema schema}) {
     RpbYokozunaSchemaPutReq req = new RpbYokozunaSchemaPutReq();
     req.schema = schema;
-    return sendRequest<void>(requestCode: rpbYokozunaSchemaPutReq, message: req)
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbYokozunaSchemaPutReq, message: req)
         .last;
   }
 
@@ -333,33 +374,21 @@ class RiakClient extends AbstractClient {
     RpbAuthReq req = new RpbAuthReq();
     req.user = user;
     req.password = password;
-    return sendRequest<void>(requestCode: rpbAuthReq, message: req).last;
+    return sendRequest<void>(requestCode: MessageCode.rpbAuthReq, message: req)
+        .last;
   }
 
   Future<void> setClientId({@required List<int> clientId}) {
     RpbSetClientIdReq req = new RpbSetClientIdReq();
     req.clientId = clientId;
-    return sendRequest<void>(requestCode: rpbSetClientIdReq, message: req).last;
-  }
-
-  Future<RpbGetClientIdResp> getClientId() {
-    return sendRequest<RpbGetClientIdResp>(requestCode: rpbGetClientIdReq).last;
-  }
-
-  Future<RpbGetBucketResp> getBucketTypeProperties({@required List<int> type}) {
-    RpbGetBucketTypeReq req = new RpbGetBucketTypeReq();
-    req.type = type;
-    return sendRequest<RpbGetBucketResp>(
-            requestCode: rpbGetBucketTypeReq, message: req)
+    return sendRequest<void>(
+            requestCode: MessageCode.rpbSetClientIdReq, message: req)
         .last;
   }
 
-  Future<void> setBucketTypeProperties(
-      {@required RpbBucketProps props, @required List<int> type}) {
-    RpbSetBucketTypeReq req = new RpbSetBucketTypeReq();
-    req.type = type;
-    req.props = props;
-    return sendRequest<void>(requestCode: rpbSetBucketTypeReq, message: req)
+  Future<RpbGetClientIdResp> getClientId() {
+    return sendRequest<RpbGetClientIdResp>(
+            requestCode: MessageCode.rpbGetClientIdReq)
         .last;
   }
 }

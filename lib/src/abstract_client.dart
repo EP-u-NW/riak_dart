@@ -52,7 +52,7 @@ abstract class AbstractClient {
 
   void _handleMessage(int messageCode, dynamic message) {
     if (_responseQueue.isNotEmpty) {
-      if (messageCode == rpbErrorResp) {
+      if (messageCode == MessageCode.rpbErrorResp) {
         _RequestResult response = _responseQueue.removeAt(0);
         response.streamController
             .addError(new RpbErrorRespException(error: message));
@@ -103,7 +103,7 @@ abstract class AbstractClient {
       {dynamic host,
       SecurityContext context,
       bool onBadCertificate(X509Certificate certificate)}) async {
-    await sendRequest<void>(requestCode: rpbStartTls).last;
+    await sendRequest<void>(requestCode: MessageCode.rpbStartTls).last;
     _socket = await SecureSocket.secure(_socket,
         host: host, context: context, onBadCertificate: onBadCertificate);
     _out = new LengthPrependerSink(_socket);
