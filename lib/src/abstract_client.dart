@@ -13,9 +13,16 @@ import '../generated_protobuf.dart';
 
 const List<int> _emptyList = const <int>[];
 
+/// Invoked when an error happens
 typedef void ErrorCallback(dynamic error);
 
+/// Abstract base class for the [RiakClient]
 abstract class AbstractClient {
+  /// Invoked in several error cases:
+  /// * If a socket error (e.g. connection releated) happens, the error is passed to this callback
+  /// * If an empty message without content or message code is received, this callback is invoked with an [EmptyMessageException]
+  /// * If a message with an unknown message code is received, this callback is invoked with an [UnknownMessageCodeException]
+  /// * If a message is received while there is no pending request, this callback is invoked with an [UnexpectedMessageException]
   ErrorCallback onError;
   final List<_RequestResult> _responseQueue;
   Socket _socket;
@@ -85,10 +92,13 @@ abstract class AbstractClient {
     unawaited(r.streamController.close());
   }
 
+  /// Flushes the underlying socket.
   Future<dynamic> flush() => _out.flush();
 
+  /// Closes the underlying socket.
   Future<dynamic> close() => _out.close();
 
+  /// Waits for any pending requests to complete and closes the underlying socket afterwards.
   Future<dynamic> closeGracefully() async {
     if (_responseQueue.isEmpty) {
       await close();
@@ -100,6 +110,11 @@ abstract class AbstractClient {
     }
   }
 
+  /// This method is experimental! Tries to secure the connection to the server using start tls.
+  ///
+  /// This works by sending a Riak startTls message to the server. 
+  /// If the server responds with an appropriate message, the underlying socket is secured using [SecureSocket.secure].
+  /// All parameters are passed to [SecureSocket.secure] and documented there.
   Future<void> startTls(
       {dynamic host,
       SecurityContext context,
@@ -113,6 +128,9 @@ abstract class AbstractClient {
         .listen(_handle, onError: _onError);
   }
 
+  /// Handles the request sending. In most cases, you dont want to call this directly but call an other method matching the request you want to send.
+  ///
+  /// If you invoke this method directly it may throw a [NotSendableMessageException]. This happens if the [requestCode] has no registered response code in [expectedResponseTypes].
   Stream<V> sendRequest<V>(
       {@required int requestCode,
       GeneratedMessage message,
@@ -145,6 +163,7 @@ class _RequestResult<V> {
       : this.streamController = new StreamController<V>();
 }
 
+/// If a message is received while there is no pending request, [AbstractClient.onError] is invoked with an instance of this calss
 class UnexpectedMessageException implements Exception {
   final int messageCode;
   UnexpectedMessageException({@required this.messageCode});
@@ -155,6 +174,7 @@ class UnexpectedMessageException implements Exception {
   }
 }
 
+/// If an empty message without content or message code is received, [AbstractClient.onError] is invoked with an instance of this calss
 class EmptyMessageException implements Exception {
   @override
   String toString() {
@@ -162,6 +182,7 @@ class EmptyMessageException implements Exception {
   }
 }
 
+/// If a message with an unknown message code is received, [AbstractClient.onError] is invoked with an instance of this calss
 class UnknownMessageCodeException implements Exception {
   final int messageCode;
   UnknownMessageCodeException({@required this.messageCode});
@@ -172,6 +193,7 @@ class UnknownMessageCodeException implements Exception {
   }
 }
 
+/// A request answered with a response code other than registered in [expectedResponseTypes] will produce this exception
 class WrongResponseCodeException implements Exception {
   final int expected;
   final int got;
@@ -183,6 +205,7 @@ class WrongResponseCodeException implements Exception {
   }
 }
 
+/// This exception occures if a request is made with a request code that has no registered response code in [expectedResponseTypes]
 class NotSendableMessageException implements Exception {
   final int requestCode;
   NotSendableMessageException({@required this.requestCode});
@@ -193,6 +216,7 @@ class NotSendableMessageException implements Exception {
   }
 }
 
+/// If Riak sends a [RpbErrorResp] message as result of a request, the message is wrapped in this class
 class RpbErrorRespException implements Exception {
   final RpbErrorResp error;
   int get errorCode => error.errcode;

@@ -4,27 +4,19 @@ import 'dart:io';
 import 'abstract_client.dart';
 import '../generated_protobuf.dart';
 
-/// A client implementing all the methods specified in the [Riak ProtoBuf Api](https://docs.riak.com/riak/kv/2.2.3/developing/api/protocol-buffers/index.html). Since large parts of the method documentation of this class are just copied from there, the documentation of this class does not respect the dart documentation guidelines; also grammer and spelling is sometimes inconsistent, camel case (dart) is mixed with snake case (protobuf), and dead/outdatet links can occur.
+/// A client implementing all the methods specified in the [Riak ProtoBuf Api](https://docs.riak.com/riak/kv/2.2.3/developing/api/protocol-buffers/index.html). 
 ///
-/// Most methods return a [Future] with a response object matching the request, some streaming methodes use a [Stream] of response objects to represent the method result.
-/// Sometimes, not awaiting a future, but executing multiple requests and awaiting a collecion of futures, can increase performance signicifantly.
-/// For example, to store multiple objects, consider this:
-/// ```
-/// Future storeMultiple(RiakClient client, Map<String, String> keyValueMap) {
-///   List<int> bucket = utf8.encode('default');
-///   Iterable<Future> storeFutures = keyValueMap.keys.map<Future>(
-///       (String key) => client.storeObject(
-///           bucket: bucket,
-///           key: utf8.encode(key),
-///           content: new RpbContent()..value = utf8.encode(keyValueMap[key])));
-///   return Future.wait(storeFutures);
-/// }
-/// ```
-/// The more elements the keyValueMap contains, the faster this code will run compared to awaiting every storing response in sequence due to optimizations on network level.
+/// All returned futures and streams may complete with / contain the following errors and exceptions:
+/// * A request answered with a response code other than registered in [expectedResponseTypes] will result in a [WrongResponseCodeException]
+/// * A Riak side error will result in a [RpbErrorRespException]
+///
 class RiakClient extends AbstractClient {
   RiakClient._(Socket socket) : super(socket);
 
-  ///TODO
+  /// Connects to a Riak instance and returns a Future that will complete with a [RiakClient] when done.
+  /// 
+  /// The parameters are all passed to the underlying [Socket.connect] call,
+  /// so see the [Socket] class for how to use the parameters.
   static Future<RiakClient> connect(
       {@required dynamic host,
       int port = 8087,
