@@ -1,9 +1,14 @@
 # riak_dart
 An unofficial Riak client for dart based on [Riaks ProtoBuf API](https://docs.riak.com/riak/kv/2.2.3/developing/api/protocol-buffers/).
 
-### riak_dart library
+## riak_dart and generated_protobuf library
+This package consists of the riak_dart library and the generated_protobuf library.
 
-### generated_protobuf library
+The riak_dart libary contains the `RiakClient`, which provides a request method for each defined Riak ProtoBuf API request.
+Since large parts of the method documentation of `RiakClient` are just copied from the [Riak ProtoBuf API](https://docs.riak.com/riak/kv/2.2.3/developing/api/protocol-buffers/), the documentation of this class does not respect the dart documentation guidelines; also grammer and spelling is sometimes inconsistent, camel case (dart) is mixed with snake case (protobuf), and dead/outdatet links can occur.
+
+The generated_protobuf library on the other hand contains the files generated from Riaks ProtoBuf sourcefiles.
+The generated classes where not altered, what also means that they are not documented! Rather methods in the riak_dart library using or returning classes from generated_protobuf explain their usage. You can always take a look at the official [Riak ProtoBuf Api documantation](https://docs.riak.com/riak/kv/2.2.3/developing/api/protocol-buffers/), especially for more information about the messages. 
 
 ## Example
 ```dart
@@ -43,6 +48,15 @@ Future<void> main() async {
 ## Useful Notes
 
 ### Error handling
+Errors and exceptions can occure in two ways:
+1. A call to a request method of the RiakClient returns a future or a stream which may complete with / contain the following errors and exceptions:
+    * A request answered with a response code other than registered in the expectedResponseTypes top-level constant will result in a WrongResponseCodeException
+    * A Riak side error will result in a RpbErrorRespException
+2. There are some exceptions that do not belong to a request. They are forwarded to the onError callback of the RiakClient:
+    * If a socket error (e.g. connection releated) happens, the error is passed to this callback
+    * If an empty message without content or message code is received, this callback is invoked with an EmptyMessageException
+    * If a message with an unknown message code is received, this callback is invoked with an UnknownMessageCodeException
+    * If a message is received while there is no pending request, this callback is invoked with an UnexpectedMessageException
 
 ### Experimental TLS/SSL
 Documentation on how to initiate a TLS encrypted connection with Riak is very sparse.
