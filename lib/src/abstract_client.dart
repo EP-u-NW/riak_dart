@@ -9,6 +9,7 @@ import 'package:protobuf/protobuf.dart';
 import 'messages.dart';
 import 'stream_utils/length_based_stream_transformer.dart';
 import 'stream_utils/length_prepender_sink.dart';
+import '../generated_protobuf.dart';
 
 const List<int> _emptyList = const <int>[];
 

@@ -1,23 +1,16 @@
 import 'package:protobuf/protobuf.dart';
+import '../generated_protobuf.dart';
 
-import 'generated_protobuf/riak.pbserver.dart';
-import 'generated_protobuf/riak_dt.pbserver.dart';
-import 'generated_protobuf/riak_kv.pbserver.dart';
-import 'generated_protobuf/riak_search.pbserver.dart';
-import 'generated_protobuf/riak_yokozuna.pbserver.dart';
-import 'generated_protobuf/riak_ts.pbserver.dart';
-
-export 'generated_protobuf/riak.pbserver.dart';
-export 'generated_protobuf/riak_dt.pbserver.dart';
-export 'generated_protobuf/riak_kv.pbserver.dart';
-export 'generated_protobuf/riak_search.pbserver.dart';
-export 'generated_protobuf/riak_yokozuna.pbserver.dart';
-export 'generated_protobuf/riak_ts.pbserver.dart';
-
+/// Builds a [GeneratedMessage] from bytes.
 typedef GeneratedMessage MessageBuilder(List<int> bytes);
 
 GeneratedMessage _nullBuilder(List<int> bytes) => null;
 
+/// Used to obtain the matching [MessageBuilder] for each defined message code.
+///
+/// There are message codes that are defined wihout a matching protobuf message (e.g. there are ping message codes but no actual ping protobuf messages).
+/// For those codes, this map is not empty but contains the null-builder.
+/// Invoking the null-builder is allowed, but will always return null instead of a message.
 final Map<int, MessageBuilder> builders = <int, MessageBuilder>{
   MessageCode.rpbErrorResp: (List<int> bytes) => RpbErrorResp.fromBuffer(bytes),
   MessageCode.rpbPingReq: _nullBuilder,
@@ -133,6 +126,7 @@ final Map<int, MessageBuilder> builders = <int, MessageBuilder>{
   MessageCode.rpbStartTls: _nullBuilder
 };
 
+/// Used to map the expected response message code to the message code of a request.
 const Map<int, int> expectedResponseTypes = const <int, int>{
   MessageCode.rpbPingReq: MessageCode.rpbPingResp,
   MessageCode.rpbGetClientIdReq: MessageCode.rpbGetClientIdResp,
@@ -174,6 +168,7 @@ const Map<int, int> expectedResponseTypes = const <int, int>{
   MessageCode.rpbSetBucketTypeReq: MessageCode.rpbSetBucketResp
 };
 
+/// A class containing all defined Riak protobuf message codes.
 abstract class MessageCode {
   static const int rpbErrorResp = 0,
       rpbPingReq = 1,
